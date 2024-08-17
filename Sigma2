@@ -1,0 +1,35 @@
+while true
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local mouse = player:GetMouse()
+
+local function createBox()
+    local box = Instance.new("Frame")
+    box.Size = UDim2.new(0, 100, 0, 100)
+    box.BorderSizePixel = 2
+    box.BorderColor3 = Color3.fromRGB(255, 0, 0)
+    box.BackgroundTransparency = 1
+    box.Parent = player.PlayerGui
+    return box
+end
+
+local function updateBox(box, character)
+    local head = character:FindFirstChild("Head")
+    if head then
+        box.Position = UDim2.new(0, head.Position.X, 0, head.Position.Y)
+        box.Size = UDim2.new(0, head.Size.X, 0, head.Size.Y)
+    end
+end
+
+local function highlightPlayers()
+    for _, v in pairs(Players:GetPlayers()) do
+        if v ~= player then
+            local box = createBox()
+            updateBox(box, v.Character or v.CharacterAdded:Wait())
+        end
+    end
+end
+
+highlightPlayers()
+
+do
